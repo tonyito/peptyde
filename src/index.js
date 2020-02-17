@@ -7,7 +7,6 @@ import Display from './display.jsx'
 const Index = () => {
   return (
     <div>
-    <h1>Hi</h1>
     <Display />
     </div>
   );
