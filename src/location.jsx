@@ -1,10 +1,10 @@
 import React from "react";
 import "./styles.scss";
 
-const Location = ({ type, number, state }) => {
+const Location = ({ type, number, id, openLocation }) => {
     return (
       <React.Fragment>
-        <tr>
+        <tr onClick={() => openLocation(id)}>
           <td>{type}</td>
           <td>{number}</td>
         </tr>

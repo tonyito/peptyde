@@ -1,48 +1,69 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "./styles.scss";
-import Location from "./location.jsx";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './styles.scss';
+import Location from './location.jsx';
 
 const Display = () => {
   const [locationData, setLocationData] = useState({});
-  const [page, setPage] = useState("location");
+  const [page, setPage] = useState('location');
   const [renderStatus, setRenderStatus] = useState(false);
+  const [locationID, setLocationID] = useState('');
 
+  function openLocation(id) {
+    setLocationID(id);
+    setPage('locationDetail')
+  }
   useEffect(() => {
-    if (page === "location") {
+    if (page === 'location') {
       axios
-        .get("/api/location/")
+        .get('/api/location/')
         .then(data => {
           setLocationData(data);
           setRenderStatus(true);
         })
-        .catch(err => console.log("DetailsModal: fetch /api: ERROR: ", err));
+        .catch(err => console.log('DetailsModal: fetch /api: ERROR: ', err));
     }
+    else if (page === 'locationDetail') {
+      axios
+      .get('/api/locationDetail/')
+      .then(data => {
+        setLocationData(data);
+        setRenderStatus(true);
+        console.log('clicked', locationID);
+      })
+      .catch(err => console.log('DetailsModal: fetch /api: ERROR: ', err));
+  }
+    
   }, [page]);
 
-  if (page === "location" && renderStatus) {
+  if (page === 'location' && renderStatus) {
     const data = locationData.data;
-    // const rows = data.map((x, i) => {
-    //   <Location key={`Location Number ${i}`} type={x.type} number={x.number} state={renderStatus}/>;
-    // });
     const array = [];
     for (let i = 0; i < data.length; i++) {
-      array.push(<Location key={`Location Number ${i}`} type={data[i].type} number={data[i].number} state={renderStatus}/>)
+      array.push(
+        <Location
+          key={`Location Number ${i}`}
+          id={data[i]._id}
+          type={data[i].type}
+          number={data[i].number}
+          openLocation={openLocation}
+        />
+      );
     }
     return (
       <div>
-      <table>
-      <tbody>
-        <tr>    
-        <th>Storage Unit Type</th>
-        <th>Unit Number</th>
-        </tr>
-        {array}
-        </tbody>
+        <table>
+          <tbody>
+            <tr>
+              <th>Storage Unit Type</th>
+              <th>Unit Number</th>
+            </tr>
+            {array}
+          </tbody>
         </table>
       </div>
     );
-  } else if (page === "location" && !renderStatus) {
+  } else {
     return <h1>Loading...</h1>;
   }
 };

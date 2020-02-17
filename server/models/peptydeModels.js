@@ -18,14 +18,13 @@ const Schema = mongoose.Schema;
 
 // sets a schema for the 'items' collection
 const itemSchema = new Schema({
-  name: String,
   item_id: {
     type: Schema.Types.ObjectId,
     ref: "category",
     required: true
   },
   stock_date: { type: Date, default: Date.now },
-  expiration: String,
+  expiration: Date,
   mass: Number,
   volume: Number,
   location_id: {
@@ -48,9 +47,8 @@ const Item = mongoose.model("items", itemSchema);
 const categorySchema = new Schema({
   name: String,
   state: String,
-  mass: Number,
-  volume: Number,
-  last_checked: String
+  brand: String,
+  catalog_number: String
 });
 
 // creats a model for the 'categories' collection that will be part of the export
