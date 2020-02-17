@@ -4,10 +4,13 @@ import './styles.scss';
 const Item = ({
   id,
   name,
+  brand, 
   stock_date,
   expiration,
   mass,
+  mass_unit,
   volume,
+  volume_unit,
   location_name,
   last_checked,
   username
@@ -20,8 +23,9 @@ const Item = ({
     <React.Fragment>
       <tr>
         <td>{name}</td>
-        <td>{mass}</td>
-        <td>{volume}</td>
+        <td>{brand}</td>
+        <td>{mass}{mass_unit}</td>
+        <td>{volume}{volume_unit}</td>
         <td>{stock_date}</td>
         <td>{expiration}</td>
         <td>{last_checked}</td>

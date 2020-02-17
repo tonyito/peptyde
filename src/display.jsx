@@ -11,14 +11,30 @@ const Display = () => {
   const [page, setPage] = useState('location');
   const [renderStatus, setRenderStatus] = useState(false);
   const [locationID, setLocationID] = useState('');
+  const [catalogData, setCatalogData] = useState({});
+  const [itemSelected, setItemSelected] = useState('');
+  const [brandSelected, setBrandSelected] = useState('');
+  const [mass, setMass] = useState(0);
+  const [volume, setVolume] = useState(0);
+  const [massUnit, setMassUnit] = useState('kg');
+  const [volumeUnit, setVolumeUnit] = useState('L');
 
   function openLocation(id, type, number) {
     setLocationID(id);
     setCurrentLocation(type + ' ' + number);
     setPage('locationDetail');
-    //added this after commit
     setRenderStatus(false);
   }
+
+  function addItem() {
+    setPage('addItem');
+    setRenderStatus(false);
+  }
+
+  function sendAddItem() {
+    console.log(locationID, itemSelected, brandSelected, mass, massUnit, volume, volumeUnit);
+  }
+
   useEffect(() => {
     //get request for all locations
     if (page === 'location') {
@@ -38,10 +54,63 @@ const Display = () => {
           setRenderStatus(true);
         })
         .catch(err => console.log('Location Detail: fetch /api: ERROR: ', err));
+    } else if (page === 'addItem') {
+      axios
+      .get('/api/catalog/')
+      .then(data => {
+        setCatalogData(data);
+        setRenderStatus(true);
+      })
+      .catch(err => console.log('Location Detail: fetch /api: ERROR: ', err));
     }
   }, [page]);
   //render for all locations
-  if (page === 'location' && renderStatus) {
+  if (page === 'addItem' && renderStatus) {
+    const data = catalogData.data;
+    const nameArray = [<option key='defaultName' value='select'>Select</option>];
+    const brandArray = [<option key='defaultBrand' value='select'>Select</option>];
+    for (let i = 0; i < data.length; i++) {
+      nameArray.push(
+        <option key={`addItemName ${i}`} value={data[i].name}>{data[i].name}</option>
+      )
+      brandArray.push(
+        <option key={`addItemBrand ${i}`} value={data[i].brand}>{data[i].brand}</option>
+
+      )
+    }
+    return (
+      <div>
+        <label htmlFor="itemName">Select an item:</label>
+        <select id="itemName" onChange={(e) => setItemSelected(e.target.value)}>
+          {nameArray}
+        </select>
+        <label htmlFor="brandName" >Select an brand:</label>
+        <select id="brandName" onChange={(e) => setBrandSelected(e.target.value)}>
+          {brandArray}
+        </select>
+        <span>Mass:</span>
+        <textarea tpe='text' name='mass' value = {mass} onChange={(e) => setMass('' + e.target.value)}/>
+        <label htmlFor="massUnit">Unit:</label>
+        <select id="massUnit" value={massUnit} onChange={(e) => setMassUnit(e.target.value)}>
+        <option value='kg'>kg</option>
+        <option value='g'>g</option>
+        <option value='mg'>mg</option>
+        <option value='ug'>ug</option>
+        <option value='ng'>ng</option>
+        </select>
+        <span>or Volume:</span>
+        <textarea tpe='text' name='volume' value = {volume} onChange={(e) => setVolume('' + e.target.value)}/>
+        <label htmlFor="volumeUnit">Unit:</label>
+        <select id="volumeUnit" value={volumeUnit} onChange={(e) => setVolumeUnit(e.target.value)}>
+        <option value='L'>L</option>
+        <option value='mL'>mL</option>
+        <option value='uL'>uL</option>
+        <option value='nL'>nL</option>
+        </select>
+        <button onClick={() => sendAddItem()}>Add</button>
+      </div>
+    );
+  } else if (page === 'location' && renderStatus) {
     const data = locationData.data;
     const array = [];
     for (let i = 0; i < data.length; i++) {
@@ -78,10 +147,13 @@ const Display = () => {
           key={`Item Number ${i}`}
           id={data[i]._id}
           name={data[i].item_name}
+          brand={data[i].brand}
           stock_date={data[i].stock_date}
           expiration={data[i].expiration}
           mass={data[i].mass}
+          mass_unit = {data[i].mass_unit}
           volume={data[i].volume}
+          volume_unit={data[i].volume_unit}
           location_name={data[i].location_name}
           last_checked={data[i].last_checked}
           username={data[i].username}
@@ -90,11 +162,13 @@ const Display = () => {
     }
     return (
       <div>
+        <button onClick={() => addItem()}>Add Item</button>
         <h1>List of Items for {currentLocation}</h1>
         <table>
           <tbody>
             <tr>
               <th>Name</th>
+              <th>Brand</th>
               <th>Mass</th>
               <th>Volume</th>
               <th>Stock Date</th>

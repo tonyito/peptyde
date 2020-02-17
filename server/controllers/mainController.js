@@ -34,5 +34,20 @@ mainController.getLocations = (req, res, next) => {
     })
   }
 
+  mainController.getCatalog = (req, res, next) => {
+    // write code here
+    Category.find({}, (err, items) => {
+      if (err) next({
+        log: `Express error handler caught getCharacters error ${err}`,
+        status: 400,
+        message: { err: `${err}`},
+      });
+      else {
+      res.locals.catalog = items;
+      next();
+      }
+    })
+  }
+
 
 module.exports = mainController;
