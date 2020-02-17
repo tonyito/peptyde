@@ -18,6 +18,7 @@ const Display = () => {
   const [volume, setVolume] = useState(0);
   const [massUnit, setMassUnit] = useState('kg');
   const [volumeUnit, setVolumeUnit] = useState('L');
+  const [date, setDate] = useState(Date.now());
 
   function openLocation(id, type, number) {
     setLocationID(id);
@@ -32,7 +33,42 @@ const Display = () => {
   }
 
   function sendAddItem() {
-    console.log(locationID, itemSelected, brandSelected, mass, massUnit, volume, volumeUnit);
+    // console.log(locationID, itemSelected, brandSelected, mass, massUnit, volume, volumeUnit);
+    if (
+      itemSelected !== '' &&
+      brandSelected !== '' &&
+      itemSelected !== 'select' &&
+      brandSelected !== 'select' &&
+      (mass !== 0 || volume !== 0)
+    ) {
+      const body = {
+        locationID,
+        itemSelected,
+        brandSelected,
+        mass,
+        massUnit,
+        volume,
+        volumeUnit,
+        date,
+        locationID
+      };
+      fetch('/api/addItem', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'Application/JSON'
+        },
+        body: JSON.stringify(body)
+      })
+      .then(resp => resp.json())
+        .then(() => {
+          setPage('locationDetail');
+          setRenderStatus(false);
+        })
+        .then(console.log('sent!'))
+        .catch(err =>
+          console.log('CreateCharacter fetch /api/addItem: ERROR: ', err)
+        );
+    }
   }
 
   useEffect(() => {
@@ -56,57 +92,93 @@ const Display = () => {
         .catch(err => console.log('Location Detail: fetch /api: ERROR: ', err));
     } else if (page === 'addItem') {
       axios
-      .get('/api/catalog/')
-      .then(data => {
-        setCatalogData(data);
-        setRenderStatus(true);
-      })
-      .catch(err => console.log('Location Detail: fetch /api: ERROR: ', err));
+        .get('/api/catalog/')
+        .then(data => {
+          setCatalogData(data);
+          setRenderStatus(true);
+        })
+        .catch(err => console.log('Location Detail: fetch /api: ERROR: ', err));
     }
   }, [page]);
   //render for all locations
   if (page === 'addItem' && renderStatus) {
     const data = catalogData.data;
-    const nameArray = [<option key='defaultName' value='select'>Select</option>];
-    const brandArray = [<option key='defaultBrand' value='select'>Select</option>];
+    const nameArray = [
+      <option key="defaultName" value="select">
+        Select
+      </option>
+    ];
+    const brandArray = [
+      <option key="defaultBrand" value="select">
+        Select
+      </option>
+    ];
     for (let i = 0; i < data.length; i++) {
       nameArray.push(
-        <option key={`addItemName ${i}`} value={data[i].name}>{data[i].name}</option>
-      )
+        <option key={`addItemName ${i}`} value={data[i].name}>
+          {data[i].name}
+        </option>
+      );
       brandArray.push(
-        <option key={`addItemBrand ${i}`} value={data[i].brand}>{data[i].brand}</option>
-
-      )
+        <option key={`addItemBrand ${i}`} value={data[i].brand}>
+          {data[i].brand}
+        </option>
+      );
     }
     return (
       <div>
         <label htmlFor="itemName">Select an item:</label>
-        <select id="itemName" onChange={(e) => setItemSelected(e.target.value)}>
+        <select id="itemName" onChange={e => setItemSelected(e.target.value)}>
           {nameArray}
         </select>
-        <label htmlFor="brandName" >Select an brand:</label>
-        <select id="brandName" onChange={(e) => setBrandSelected(e.target.value)}>
+        <label htmlFor="brandName">Select an brand:</label>
+        <select id="brandName" onChange={e => setBrandSelected(e.target.value)}>
           {brandArray}
         </select>
         <span>Mass:</span>
-        <textarea tpe='text' name='mass' value = {mass} onChange={(e) => setMass('' + e.target.value)}/>
+        <textarea
+          tpe="text"
+          name="mass"
+          value={mass}
+          onChange={e => setMass('' + e.target.value)}
+        />
         <label htmlFor="massUnit">Unit:</label>
-        <select id="massUnit" value={massUnit} onChange={(e) => setMassUnit(e.target.value)}>
-        <option value='kg'>kg</option>
-        <option value='g'>g</option>
-        <option value='mg'>mg</option>
-        <option value='ug'>ug</option>
-        <option value='ng'>ng</option>
+        <select
+          id="massUnit"
+          value={massUnit}
+          onChange={e => setMassUnit(e.target.value)}
+        >
+          <option value="kg">kg</option>
+          <option value="g">g</option>
+          <option value="mg">mg</option>
+          <option value="ug">ug</option>
+          <option value="ng">ng</option>
         </select>
         <span>or Volume:</span>
-        <textarea tpe='text' name='volume' value = {volume} onChange={(e) => setVolume('' + e.target.value)}/>
+        <textarea
+          tpe="text"
+          name="volume"
+          value={volume}
+          onChange={e => setVolume('' + e.target.value)}
+        />
         <label htmlFor="volumeUnit">Unit:</label>
-        <select id="volumeUnit" value={volumeUnit} onChange={(e) => setVolumeUnit(e.target.value)}>
-        <option value='L'>L</option>
-        <option value='mL'>mL</option>
-        <option value='uL'>uL</option>
-        <option value='nL'>nL</option>
+        <select
+          id="volumeUnit"
+          value={volumeUnit}
+          onChange={e => setVolumeUnit(e.target.value)}
+        >
+          <option value="L">L</option>
+          <option value="mL">mL</option>
+          <option value="uL">uL</option>
+          <option value="nL">nL</option>
         </select>
+        <label htmlFor="expiration">Expiration date:</label>
+        <input
+          type="date"
+          id="expiration"
+          name="expiration"
+          onChange={e=> setDate(e.target.value)}
+        ></input>
         <button onClick={() => sendAddItem()}>Add</button>
       </div>
     );
@@ -151,7 +223,7 @@ const Display = () => {
           stock_date={data[i].stock_date}
           expiration={data[i].expiration}
           mass={data[i].mass}
-          mass_unit = {data[i].mass_unit}
+          mass_unit={data[i].mass_unit}
           volume={data[i].volume}
           volume_unit={data[i].volume_unit}
           location_name={data[i].location_name}

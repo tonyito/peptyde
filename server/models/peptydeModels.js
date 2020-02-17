@@ -35,15 +35,12 @@ const itemSchema = new Schema({
   location_name: String,
   location_id: {
     type: Schema.Types.ObjectId,
-    ref: "location",
-    required: true
+    ref: "location"
   },
   last_checked: Date,
   username: String,
   user_id: {
-    type: Schema.Types.ObjectId,
-    ref: "user",
-    required: true
+    type: Number
   }
 });
 
