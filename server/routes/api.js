@@ -10,4 +10,9 @@ router.get('/location',
   (req, res) => res.status(200).json(res.locals.locations)
 );
 
+router.get('/locationDetail',
+  mainController.getItems,
+  (req, res) => res.status(200).json(res.locals.items)
+);
+
 module.exports = router;

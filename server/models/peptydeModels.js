@@ -18,6 +18,7 @@ const Schema = mongoose.Schema;
 
 // sets a schema for the 'items' collection
 const itemSchema = new Schema({
+  item_name: String,
   item_id: {
     type: Schema.Types.ObjectId,
     ref: "category",
@@ -27,12 +28,14 @@ const itemSchema = new Schema({
   expiration: Date,
   mass: Number,
   volume: Number,
+  location_name: String,
   location_id: {
     type: Schema.Types.ObjectId,
     ref: "location",
     required: true
   },
   last_checked: Date,
+  username: String,
   user_id: {
     type: Schema.Types.ObjectId,
     ref: "user",
