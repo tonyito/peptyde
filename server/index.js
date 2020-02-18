@@ -19,7 +19,7 @@ app.use('/api', apiRouter);
 app.get('/', (req, res) => {
  res.sendFile(HTML_FILE); 
 });
-app.use((req, res) => res.sendStatus(404));
+app.use((req, res) => res.sendFile(HTML_FILE));
 
 /**
  * express error handler
