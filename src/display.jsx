@@ -20,6 +20,7 @@ const Display = () => {
   const [volumeUnit, setVolumeUnit] = useState('L');
   const [date, setDate] = useState(Date.now());
 
+  //function to display items in location selected
   function openLocation(id, type, number) {
     setLocationID(id);
     setCurrentLocation(type + ' ' + number);
@@ -27,13 +28,21 @@ const Display = () => {
     setRenderStatus(false);
   }
 
+  //function to open 'add item' component (not really a component I shouldve made it one though. Maybe later.)
   function addItem() {
     setPage('addItem');
     setRenderStatus(false);
   }
 
+  //function to open 'update item' component
+  function updateItem(id) {
+    setItemSelected(id);
+    setPage('update');
+    serRenderStatus(false);
+  }
+
+  //function to send post request to add item to mongo
   function sendAddItem() {
-    // console.log(locationID, itemSelected, brandSelected, mass, massUnit, volume, volumeUnit);
     if (
       itemSelected !== '' &&
       brandSelected !== '' &&
@@ -59,10 +68,15 @@ const Display = () => {
         },
         body: JSON.stringify(body)
       })
-      .then(resp => resp.json())
+        .then(resp => resp.json())
         .then(() => {
           setPage('locationDetail');
           setRenderStatus(false);
+          setCatalogData('');
+          setItemSelected('');
+          setBrandSelected('');
+          setMass(0);
+          setVolume(0);
         })
         .then(console.log('sent!'))
         .catch(err =>
@@ -71,6 +85,7 @@ const Display = () => {
     }
   }
 
+  //side effect handlers
   useEffect(() => {
     //get request for all locations
     if (page === 'location') {
@@ -90,6 +105,7 @@ const Display = () => {
           setRenderStatus(true);
         })
         .catch(err => console.log('Location Detail: fetch /api: ERROR: ', err));
+      //get request for selector data
     } else if (page === 'addItem') {
       axios
         .get('/api/catalog/')
@@ -177,7 +193,7 @@ const Display = () => {
           type="date"
           id="expiration"
           name="expiration"
-          onChange={e=> setDate(e.target.value)}
+          onChange={e => setDate(e.target.value)}
         ></input>
         <button onClick={() => sendAddItem()}>Add</button>
       </div>
@@ -229,6 +245,7 @@ const Display = () => {
           location_name={data[i].location_name}
           last_checked={data[i].last_checked}
           username={data[i].username}
+          updateItem={updateItem}
         />
       );
     }

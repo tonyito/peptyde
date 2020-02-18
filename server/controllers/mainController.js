@@ -4,8 +4,9 @@ const mainController = {};
 
 const { Item, Category, Location, User } = models;
 
+//middleware to get all locations
 mainController.getLocations = (req, res, next) => {
-  // write code here
+
   Location.find({}, (err, location) => {
     if (err)
       next({
@@ -20,8 +21,9 @@ mainController.getLocations = (req, res, next) => {
   });
 };
 
+//middleware to list all items in a location 
 mainController.getItems = (req, res, next) => {
-  // write code here
+
   Item.find({ location_id: req.query.id }, (err, item) => {
     if (err)
       next({
@@ -36,8 +38,9 @@ mainController.getItems = (req, res, next) => {
   });
 };
 
+//middleware to get all categories
 mainController.getCatalog = (req, res, next) => {
-  // write code here
+
   Category.find({}, (err, items) => {
     if (err)
       next({
@@ -52,8 +55,9 @@ mainController.getCatalog = (req, res, next) => {
   });
 };
 
+//middleware to find category info of an item
 mainController.getItemID = (req, res, next) => {
-  // write code here
+
   Category.findOne(
     { name: req.body.itemSelected, brand: req.body.brandSelected },
     (err, items) => {
@@ -71,8 +75,9 @@ mainController.getItemID = (req, res, next) => {
   );
 };
 
+//middleware to get location info from ID
 mainController.getLocationID = (req, res, next) => {
-  // write code here
+
   Location.findOne({ _id: req.body.locationID }, (err, location) => {
     if (err)
       next({
@@ -87,25 +92,8 @@ mainController.getLocationID = (req, res, next) => {
   });
 };
 
+//middleware to create item document
 mainController.addItem = (req, res, next) => {
-  // write code here
-  console.log(req.body);
-
-  // const body = {
-  //   item_name: req.body.itemSelected,
-  //   item_id: res.locals.item._id,
-  //   brand: req.body.brandSelected,
-  //   expiration: req.body.date,
-  //   mass: req.body.mass,
-  //   mass_unit: req.body.massUnit,
-  //   volume: req.body.volume,
-  //   volume_unit: req.body.volume_unit,
-  //   location_name: res.locals.location.name,
-  //   location_id: locationID,
-  //   last_checked: Date.now(),
-  //   username: 'default',
-  //   user_id: 00000
-  // };
 
   const body = {
     item_name: req.body.itemSelected,

@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const secret = require('../../secrets.js')
+const mongoose = require('mongoose');
+const secret = require('../../secrets.js');
 
 const MONGO_URI = secret;
 
@@ -9,9 +9,9 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     // sets the name of the DB that our collections are part of
-    dbName: "peptyde"
+    dbName: 'peptyde'
   })
-  .then(() => console.log("Connected to Mongo DB."))
+  .then(() => console.log('Connected to Mongo DB.'))
   .catch(err => console.log(err));
 
 const Schema = mongoose.Schema;
@@ -21,7 +21,7 @@ const itemSchema = new Schema({
   item_name: String,
   item_id: {
     type: Schema.Types.ObjectId,
-    ref: "category",
+    ref: 'category',
     required: true
   },
   brand: String,
@@ -35,7 +35,7 @@ const itemSchema = new Schema({
   location_name: String,
   location_id: {
     type: Schema.Types.ObjectId,
-    ref: "location"
+    ref: 'location'
   },
   last_checked: Date,
   username: String,
@@ -45,7 +45,7 @@ const itemSchema = new Schema({
 });
 
 // creats a model for the 'items' collection that will be part of the export
-const Item = mongoose.model("items", itemSchema);
+const Item = mongoose.model('items', itemSchema);
 
 // sets a schema for the 'categories' collection
 const categorySchema = new Schema({
@@ -55,23 +55,23 @@ const categorySchema = new Schema({
 });
 
 // creats a model for the 'categories' collection that will be part of the export
-const Category = mongoose.model("categories", categorySchema);
+const Category = mongoose.model('categories', categorySchema);
 
 const locationSchema = new Schema({
   type: { type: String, required: true },
   number: { type: Number, required: true },
-  row: { type: Number}
+  row: { type: Number }
 });
 
-const Location = mongoose.model("locations", locationSchema);
+const Location = mongoose.model('locations', locationSchema);
 
 const userSchema = new Schema({
-    role: { type: String, required: true },
-    name: { type: String, required: true },
-    privileges: { type: String, required: true }
-  });
-  
-  const User = mongoose.model("users", userSchema);
+  role: { type: String, required: true },
+  name: { type: String, required: true },
+  privileges: { type: String, required: true }
+});
+
+const User = mongoose.model('users', userSchema);
 
 // exports all the models in an object to be used in the controller
 module.exports = {

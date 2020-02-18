@@ -13,7 +13,8 @@ const Item = ({
   volume_unit,
   location_name,
   last_checked,
-  username
+  username,
+  updateItem
 }) => {
   expiration = expiration.toString().slice(0, 10);
   stock_date = stock_date.toString().slice(0, 10);
@@ -30,7 +31,9 @@ const Item = ({
         <td>{expiration}</td>
         <td>{last_checked}</td>
         <td>{username}</td>
+        <button onClick={() => updateItem(id)}>Update</button>
       </tr>
+
     </React.Fragment>
   );
 };
