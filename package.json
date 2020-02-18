@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon server/index.js",
     "build": "webpack --mode production",
-    "dev": "webpack --mode development && nodemon server/index.js",
+    "dev": "webpack --mode development  --history-api-fallback && nodemon server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -30,7 +30,8 @@
     "mongodb": "^3.5.3",
     "mongoose": "^5.9.1",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-dom": "^16.12.0",
+    "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
