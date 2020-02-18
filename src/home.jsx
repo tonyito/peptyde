@@ -11,6 +11,11 @@ const Home = () => {
          Click here to see all your stuff
         </button>
       </Link>
+      <Link to="/addItem">
+      <button>
+       Add an item
+      </button>
+    </Link>
     </div>
   );
 };
