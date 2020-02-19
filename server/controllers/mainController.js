@@ -92,6 +92,24 @@ mainController.getLocationID = (req, res, next) => {
   });
 };
 
+
+mainController.getItemSingle = (req, res, next) => {
+
+  Item.findOne({ _id: req.query.id }, (err, item) => {
+    if (err)
+      next({
+        log: `Express error handler caught getLocationID error ${err}`,
+        status: 400,
+        message: { err: `${err}` }
+      });
+    else {
+      res.locals.item = item;
+      next();
+    }
+  });
+};
+
+
 //middleware to create item document
 mainController.addItem = (req, res, next) => {
 

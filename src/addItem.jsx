@@ -72,7 +72,6 @@ const AddItem = () => {
     }
   }
   if (renderStatus) {
-      console.log(locationData.data);
     const displayLocationData = locationData.data;
     const locationArray = [
       <option key="defaultLocation" value="select">

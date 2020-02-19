@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Item from './item';
 
 const DisplaySpecific = () => {
@@ -9,6 +9,7 @@ const DisplaySpecific = () => {
 
   let { id, type, number } = useParams();
   useEffect(() => {
+    if (!renderStatus) {
     axios
       .get(`/api/locationDetail?id=${id}`)
       .then(data => {
@@ -16,19 +17,11 @@ const DisplaySpecific = () => {
         setRenderStatus(true);
       })
       .catch(err => console.log('Location Detail: fetch /api: ERROR: ', err));
+    }
   });
 
   //function to open 'update item' component
-  function updateItem(id) {
-    setItemSelected(id);
-    setPage('update');
-    serRenderStatus(false);
-  }
 
-  function openItem(id) {
-    setItemSelected(id);
-    setPage('itemDetail');
-  }
 
   if (renderStatus) {
     const data = itemsData.data;
@@ -50,14 +43,15 @@ const DisplaySpecific = () => {
           location_name={data[i].location_name}
           last_checked={data[i].last_checked}
           username={data[i].username}
-          updateItem={updateItem}
-          openItem={openItem}
         />
       );
     }
     return (
       <div>
-        <button onClick={() => addItem()}>Add Item</button>
+      <Link to="/addItem">
+      <button>
+       Add an item
+      </button></Link>
         <h1>List of Items for {type} {number}</h1>
         <table>
           <tbody>

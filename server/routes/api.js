@@ -5,6 +5,10 @@ const mainController = require('../controllers/mainController.js');
 
 const router = express.Router();
 
+router.get('/itemDetail', mainController.getItemSingle, (req, res) =>
+  res.status(200).json(res.locals.item)
+);
+
 router.get('/location', mainController.getLocations, (req, res) =>
   res.status(200).json(res.locals.locations)
 );
