@@ -143,4 +143,19 @@ mainController.addItem = (req, res, next) => {
   });
 };
 
+mainController.deleteItem = (req, res, next) => {
+  Item.deleteOne({ _id: req.body.id }, (err) => {
+    if (err)
+      next({
+        log: `Express error handler caught deleteItem error ${err}`,
+        status: 400,
+        message: { err: `${err}` }
+      });
+    else {
+      next();
+    }
+  });
+};
+
+
 module.exports = mainController;

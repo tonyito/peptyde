@@ -6,6 +6,7 @@ import DisplaySpecific from './displaySpecific.jsx';
 import AddItem from './addItem.jsx';
 import Home from './home.jsx';
 import ItemSpecific from './itemSpecific.jsx'
+import Update from './update.jsx'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 const Index = () => {
@@ -19,12 +20,18 @@ const Index = () => {
           <Route exact path="/displaySpecific/:id/:type/:number">
             <DisplaySpecific />
           </Route>
-          <Route path="/display">
+          <Route path="/display/:deleted">
             <Display />
           </Route>
+          <Route path="/display/">
+          <Display />
+        </Route>
           <Route path="/addItem">
             <AddItem />
           </Route>
+          <Route path="/update/:id">
+          <Update />
+        </Route>
           <Route path="/">
             <Home />
           </Route>

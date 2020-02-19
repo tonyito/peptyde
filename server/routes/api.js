@@ -5,6 +5,10 @@ const mainController = require('../controllers/mainController.js');
 
 const router = express.Router();
 
+router.post('/delete', mainController.deleteItem, (req, res) =>
+  res.status(200)
+);
+
 router.get('/itemDetail', mainController.getItemSingle, (req, res) =>
   res.status(200).json(res.locals.item)
 );

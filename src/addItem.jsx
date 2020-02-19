@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const AddItem = () => {
   const [renderStatus, setRenderStatus] = useState(false);
@@ -65,9 +65,8 @@ const AddItem = () => {
           setMass(0);
           setVolume(0);
         })
-        .then(console.log('sent!'))
         .catch(err =>
-          console.log('CreateCharacter fetch /api/addItem: ERROR: ', err)
+          console.log('addItem fetch /api/addItem: ERROR: ', err)
         );
     }
   }

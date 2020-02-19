@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import {useParams} from 'react-router-dom';
 import axios from 'axios';
 import './styles.scss';
 import Location from './location.jsx';
@@ -6,6 +7,7 @@ import Location from './location.jsx';
 const Display = () => {
   const [locationData, setLocationData] = useState({});
   const [renderStatus, setRenderStatus] = useState(false);
+  const {deleted} = useParams();
 
   //side effect handlers
   useEffect(() => {
@@ -23,6 +25,10 @@ const Display = () => {
   }});
 
  if (renderStatus) {
+   let success = '';
+   if (deleted) {
+    success = <h1>Item successfully deleted.</h1>
+   }
     const data = locationData.data;
     const array = [];
     for (let i = 0; i < data.length; i++) {
@@ -37,6 +43,7 @@ const Display = () => {
     }
     return (
         <div>
+        {success}
           <table>
             <tbody>
               <tr>
