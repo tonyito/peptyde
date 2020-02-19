@@ -236,48 +236,49 @@ const Display = () => {
         </div>
 
     );
-    //render all items in selected location
-  } else if (page === 'locationDetail' && renderStatus) {
-    const data = itemsData.data;
-    const array = [];
-    for (let i = 0; i < data.length; i++) {
-      array.push(
-        <Item
-          key={`Location Item Number ${i}`}
-          type={'list'}
-          id={data[i]._id}
-          name={data[i].item_name}
-          brand={data[i].brand}
-          stock_date={data[i].stock_date}
-          expiration={data[i].expiration}
-          mass={data[i].mass}
-          mass_unit={data[i].mass_unit}
-          volume={data[i].volume}
-          volume_unit={data[i].volume_unit}
-          location_name={data[i].location_name}
-          last_checked={data[i].last_checked}
-          username={data[i].username}
-          updateItem={updateItem}
-          openItem = {openItem}
-        />
-      );
-    }
-    return (
-      <div>
-        <button onClick={() => addItem()}>Add Item</button>
-        <h1>List of Items for {currentLocation}</h1>
-        <table>
-          <tbody>
-            <tr>
-              <th>Name</th>
-              <th>Brand</th>
-            </tr>
-            {array}
-          </tbody>
-        </table>
-      </div>
-    );
   }
+    //render all items in selected location
+  // else if (page === 'locationDetail' && renderStatus) {
+  //   const data = itemsData.data;
+  //   const array = [];
+  //   for (let i = 0; i < data.length; i++) {
+  //     array.push(
+  //       <Item
+  //         key={`Location Item Number ${i}`}
+  //         type={'list'}
+  //         id={data[i]._id}
+  //         name={data[i].item_name}
+  //         brand={data[i].brand}
+  //         stock_date={data[i].stock_date}
+  //         expiration={data[i].expiration}
+  //         mass={data[i].mass}
+  //         mass_unit={data[i].mass_unit}
+  //         volume={data[i].volume}
+  //         volume_unit={data[i].volume_unit}
+  //         location_name={data[i].location_name}
+  //         last_checked={data[i].last_checked}
+  //         username={data[i].username}
+  //         updateItem={updateItem}
+  //         openItem = {openItem}
+  //       />
+  //     );
+  //   }
+  //   return (
+  //     <div>
+  //       <button onClick={() => addItem()}>Add Item</button>
+  //       <h1>List of Items for {currentLocation}</h1>
+  //       <table>
+  //         <tbody>
+  //           <tr>
+  //             <th>Name</th>
+  //             <th>Brand</th>
+  //           </tr>
+  //           {array}
+  //         </tbody>
+  //       </table>
+  //     </div>
+  //   );
+  // }
   else if (page === 'itemDetail' && renderStatus) {
     const data = itemsData.data;
     let index = 0;
