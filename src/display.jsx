@@ -4,6 +4,7 @@ import './styles.scss';
 import Location from './location.jsx';
 import Item from './item.jsx';
 
+
 const Display = () => {
   const [locationData, setLocationData] = useState({});
   const [currentLocation, setCurrentLocation] = useState('');
@@ -28,6 +29,11 @@ const Display = () => {
     setRenderStatus(false);
   }
 
+  function openItem(id) {
+    setItemSelected(id);
+    setPage('itemDetail');
+  }
+
   //function to open 'add item' component (not really a component I shouldve made it one though. Maybe later.)
   function addItem() {
     setPage('addItem');
@@ -40,6 +46,8 @@ const Display = () => {
     setPage('update');
     serRenderStatus(false);
   }
+
+
 
   //function to send post request to add item to mongo
   function sendAddItem() {
@@ -213,17 +221,20 @@ const Display = () => {
       );
     }
     return (
-      <div>
-        <table>
-          <tbody>
-            <tr>
-              <th>Storage Unit Type</th>
-              <th>Unit Number</th>
-            </tr>
-            {array}
-          </tbody>
-        </table>
-      </div>
+
+        <div>
+          <table>
+            <tbody>
+              <tr>
+                <th>Storage Unit Type</th>
+                <th>Unit Number</th>
+              </tr>
+              {array}
+            </tbody>
+          </table>
+
+        </div>
+
     );
     //render all items in selected location
   } else if (page === 'locationDetail' && renderStatus) {
@@ -232,7 +243,8 @@ const Display = () => {
     for (let i = 0; i < data.length; i++) {
       array.push(
         <Item
-          key={`Item Number ${i}`}
+          key={`Location Item Number ${i}`}
+          type={'list'}
           id={data[i]._id}
           name={data[i].item_name}
           brand={data[i].brand}
@@ -246,9 +258,54 @@ const Display = () => {
           last_checked={data[i].last_checked}
           username={data[i].username}
           updateItem={updateItem}
+          openItem = {openItem}
         />
       );
     }
+    return (
+      <div>
+        <button onClick={() => addItem()}>Add Item</button>
+        <h1>List of Items for {currentLocation}</h1>
+        <table>
+          <tbody>
+            <tr>
+              <th>Name</th>
+              <th>Brand</th>
+            </tr>
+            {array}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+  else if (page === 'itemDetail' && renderStatus) {
+    const data = itemsData.data;
+    let index = 0;
+   for (let i = 0; i < data.length; i++) {
+     if (data[i]._id === itemSelected) {
+       index = i;
+     }
+   }
+    const array = [];
+      array.push(
+        <Item
+          key={`Item Number ${index}`}
+          id={data[index]._id}
+          name={data[index].item_name}
+          brand={data[index].brand}
+          stock_date={data[index].stock_date}
+          expiration={data[index].expiration}
+          mass={data[index].mass}
+          mass_unit={data[index].mass_unit}
+          volume={data[index].volume}
+          volume_unit={data[index].volume_unit}
+          location_name={data[index].location_name}
+          last_checked={data[index].last_checked}
+          username={data[index].username}
+          updateItem={updateItem}
+          openItem = {openItem}
+        />
+      );
     return (
       <div>
         <button onClick={() => addItem()}>Add Item</button>
@@ -271,7 +328,7 @@ const Display = () => {
       </div>
     );
   }
-
+  
   //render for loading
   else {
     return <h1>Loading...</h1>;

@@ -5,7 +5,7 @@ import Display from './display.jsx';
 import DisplaySpecific from './displaySpecific.jsx';
 import AddItem from './addItem.jsx';
 import Home from './home.jsx';
-import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 const Index = () => {
   return (
@@ -14,9 +14,6 @@ const Index = () => {
       <Switch>
         <Route path="/display">
           <Display />
-        </Route>
-        <Route path="/display/:id">
-          <DisplaySpecific />
         </Route>
         <Route path="/addItem">
           <AddItem />

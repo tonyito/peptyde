@@ -5,7 +5,7 @@ import { Route, Link } from 'react-router-dom';
 const Home = () => {
   return (
     <div>
-      <h1>Welcome to Peptyde</h1>
+      <h1>Hi</h1>
       <Link to="/display">
         <button>
          Click here to see all your stuff
