@@ -30,18 +30,17 @@ const AddItem = () => {
   });
 
   function sendAddItem() {
+    const output = itemSelected.split(' ');
     if (
       locationID !== ''&&
-      itemSelected !== '' &&
-      brandSelected !== '' &&
       itemSelected !== 'select' &&
       brandSelected !== 'select' &&
       (mass !== 0 || volume !== 0)
     ) {
       const body = {
         locationID,
-        itemSelected,
-        brandSelected,
+        itemSelected: output[0],
+        brandSelected: output[1],
         mass,
         massUnit,
         volume,
@@ -83,20 +82,10 @@ const AddItem = () => {
         Select
       </option>
     ];
-    const brandArray = [
-      <option key="defaultBrand" value="select">
-        Select
-      </option>
-    ];
     for (let i = 0; i < data.length; i++) {
       nameArray.push(
-        <option key={`addItemName ${i}`} value={data[i].name}>
-          {data[i].name}
-        </option>
-      );
-      brandArray.push(
-        <option key={`addItemBrand ${i}`} value={data[i].brand}>
-          {data[i].brand}
+        <option key={`addItemName ${i}`} value={`${data[i].name} ${data[i].brand}`}>
+        {`${data[i].name} ${data[i].brand}`}
         </option>
       );
     }
@@ -112,10 +101,6 @@ const AddItem = () => {
         <label htmlFor="itemName">Select an item:</label>
         <select id="itemName" onChange={e => setItemSelected(e.target.value)}>
           {nameArray}
-        </select>
-        <label htmlFor="brandName">Select an brand:</label>
-        <select id="brandName" onChange={e => setBrandSelected(e.target.value)}>
-          {brandArray}
         </select>
         <label htmlFor="locationName">Select an location:</label>
         <select id="locationName" onChange={e => setLocationID(e.target.value)}>
