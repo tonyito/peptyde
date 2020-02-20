@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const Home = () => {
   return (
     <div>
-      <h1>Welcome!</h1>
+      <h1>Minimalism or Laziness?</h1>
 
       <Link to="/display">
         <button className = '.Button' variant="info">Click here to see all your stuff</button>

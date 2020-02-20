@@ -26,6 +26,9 @@ const Index = () => {
           <Route exact path="/displaySpecific/:id/:type/:number">
             <DisplaySpecific />
           </Route>
+          <Route exact path="/reset/:id/:type/:number">
+          <DisplaySpecific />
+        </Route>
           <Route path="/display/:deleted">
             <Display />
           </Route>

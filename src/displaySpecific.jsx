@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useParams, BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Link, useParams, BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import Item from './item';
 import Search from './search';
 import AddItem from './addItem';
@@ -26,7 +26,7 @@ const DisplaySpecific = () => {
   function minimize(e) {
     let newArray = [];
     e.persist();
-    const regex = RegExp(e.target.value);
+    const regex = RegExp(e.target.value, 'i');
     for (let value of itemsData.data) {
       if(regex.test(value.item_name)) {
         newArray.push(value);
@@ -80,8 +80,11 @@ const DisplaySpecific = () => {
           </tbody>
         </table>
       </div>
-      <Router>
       <Search minimize={minimize}/>
+      <button onClick={() => setRenderStatus(false)}>
+       Reset Search
+      </button>
+      <Router>
       <Link to="/addItem">
       <button>
        Add an item
