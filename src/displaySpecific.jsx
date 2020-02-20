@@ -8,7 +8,8 @@ import AddCatalog from './addCatalog';
 
 const DisplaySpecific = () => {
   const [renderStatus, setRenderStatus] = useState(false);
-  const [itemsData, setItemsData] = useState({});
+  const [itemsData, setItemsData] = useState([]);
+  const [currentForm, setCurrentForm] = useState('');
 
   let { id, type, number } = useParams();
   useEffect(() => {
@@ -16,7 +17,7 @@ const DisplaySpecific = () => {
     axios
       .get(`/api/locationDetail?id=${id}`)
       .then(data => {
-        setItemsData(data);
+        setItemsData(data.data);
         setRenderStatus(true);
       })
       .catch(err => console.log('Location Detail: fetch /api: ERROR: ', err));
@@ -24,22 +25,31 @@ const DisplaySpecific = () => {
   });
 
   function minimize(e) {
-    let newArray = [];
-    e.persist();
-    const regex = RegExp(e.target.value, 'i');
-    for (let value of itemsData.data) {
-      if(regex.test(value.item_name)) {
-        newArray.push(value);
-      }
-    }
-    const newObj = {data: newArray};
-    setItemsData(newObj);
+    const regex = RegExp(e, 'i');
+    const output = itemsData.filter((value) => regex.test(value.item_name));
+    const items = output.map((data, i) => (
+    <Item
+    key={`Location Item Number ${i}`}
+    type={'list'}
+    id={data._id}
+    name={data.item_name}
+    brand={data.brand}
+    stock_date={data.stock_date}
+    expiration={data.expiration}
+    mass={data.mass}
+    mass_unit={data.mass_unit}
+    volume={data.volume}
+    volume_unit={data.volume_unit}
+    location_name={data.location_name}
+    last_checked={data.last_checked}
+    username={data.username}
+  />));
+  return items;
   }
 
 
-  if (renderStatus) {
-    
-    const data = itemsData.data;
+  if (renderStatus) {   
+    const data = itemsData;
         const array = [];
     for (let i = 0; i < data.length; i++) {
       array.push(
@@ -76,11 +86,11 @@ const DisplaySpecific = () => {
               <th>Name</th>
               <th>Brand</th>
             </tr>
-            {array}
+            {minimize(currentForm)}
           </tbody>
         </table>
       </div>
-      <Search minimize={minimize}/>
+      <Search minimize={minimize} setCurrentForm={setCurrentForm}/>
       <button onClick={() => setRenderStatus(false)}>
        Reset Search
       </button>

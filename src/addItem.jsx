@@ -83,6 +83,7 @@ const AddItem = () => {
         Select
       </option>
     ];
+    
     for (let i = 0; i < data.length; i++) {
       nameArray.push(
         <option key={`addItemName ${i}`} value={`${data[i].name} ${data[i].brand}`}>

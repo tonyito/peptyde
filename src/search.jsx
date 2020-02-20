@@ -4,11 +4,11 @@ import { Link } from 'react-router-dom';
 import Axios from 'axios';
 
 
-const Search = ({minimize}) => {
+const Search = ({setCurrentForm}) => {
 
   return (
     <React.Fragment>
-      <input placeholder='Search Inventory' type='text' onChange={(e)=> minimize(e)} />
+      <input placeholder='Search Inventory' type='text' onChange={(e)=> setCurrentForm(e.target.value)} />
     </React.Fragment>
   );  
 };
