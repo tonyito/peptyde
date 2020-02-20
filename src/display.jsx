@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import {useParams, Link} from 'react-router-dom';
+import {
+  useParams,
+  Link,
+  BrowserRouter as Router,
+  Route,
+  Switch,
+} from 'react-router-dom';
 import axios from 'axios';
-import './styles.scss';
 import Location from './location.jsx';
-
+import AddItem from './addItem.jsx';
+import AddCatalog from './addCatalog';
 
 const Display = () => {
   const [locationData, setLocationData] = useState({});
   const [renderStatus, setRenderStatus] = useState(false);
-  const {deleted} = useParams();
+  const { deleted } = useParams();
 
   //side effect handlers
   useEffect(() => {
@@ -22,15 +28,15 @@ const Display = () => {
         })
         .catch(err => console.log('Location: fetch /api: ERROR: ', err));
       //get request for all items in selected location
-  
-  }});
+    }
+  });
 
- if (renderStatus) {
-   let success = '';
-   if (deleted) {
-    success = <h1>Item successfully deleted.</h1>
-   }
-   
+  if (renderStatus) {
+    let success = '';
+    if (deleted) {
+      success = <h1>Item successfully deleted.</h1>;
+    }
+
     const data = locationData.data;
     const array = [];
     for (let i = 0; i < data.length; i++) {
@@ -44,8 +50,9 @@ const Display = () => {
       );
     }
     return (
-        <div>
-        {success}
+<React.Fragment>
+<div>
+          {success}
           <table>
             <tbody>
               <tr>
@@ -55,18 +62,28 @@ const Display = () => {
               {array}
             </tbody>
           </table>
+          </div>
+          <Router>
+          <div>
           <Link to="/addItem">
-          <button>
-           Add an existing catalog item
-          </button></Link>
+            <button>Add an existing catalog item</button>
+          </Link>
           <Link to="/addCatalog">
-          <button>Add a new item type to the catalog</button>
-        </Link>
+            <button>Add a new item type to the catalog</button>
+          </Link>
+          <Switch>
+            <Route path="/addItem">
+              <AddItem />
+            </Route>
+            <Route path="/addCatalog">
+            <AddCatalog />
+          </Route>
+          </Switch>
         </div>
+      </Router>
+      </React.Fragment>
     );
-  }
-
-  else {
+  } else {
     return <h1>Loading...</h1>;
   }
 };

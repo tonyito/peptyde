@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './styles.scss';
+
 import Display from './display.jsx';
 import DisplaySpecific from './displaySpecific.jsx';
 import AddCatalog from './addCatalog.jsx'
@@ -9,6 +9,8 @@ import Home from './home.jsx';
 import ItemSpecific from './itemSpecific.jsx';
 import Update from './update.jsx';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const Index = () => {
   return (
@@ -41,6 +43,12 @@ const Index = () => {
           </Route>
         </Switch>
       </Router>
+      <link
+  rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+  crossorigin="anonymous"
+/>
     </div>
   );
 };
