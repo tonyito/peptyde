@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import Item from './item';
+import Search from './search';
+
 
 const DisplaySpecific = () => {
   const [renderStatus, setRenderStatus] = useState(false);
@@ -20,12 +22,24 @@ const DisplaySpecific = () => {
     }
   });
 
-  //function to open 'update item' component
+  function minimize(e) {
+    let newArray = [];
+    e.persist();
+    const regex = RegExp(e.target.value);
+    for (let value of itemsData.data) {
+      if(regex.test(value.item_name)) {
+        newArray.push(value);
+      }
+    }
+    const newObj = {data: newArray};
+    setItemsData(newObj);
+  }
 
 
   if (renderStatus) {
+    
     const data = itemsData.data;
-    const array = [];
+        const array = [];
     for (let i = 0; i < data.length; i++) {
       array.push(
         <Item
@@ -48,10 +62,15 @@ const DisplaySpecific = () => {
     }
     return (
       <div>
+      <Search minimize={minimize}/>
       <Link to="/addItem">
+
       <button>
        Add an item
       </button></Link>
+      <Link to="/addCatalog">
+      <button>Add a new item type to the catalog</button>
+    </Link>
         <h1>List of Items for {type} {number}</h1>
         <table>
           <tbody>

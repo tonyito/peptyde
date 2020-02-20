@@ -204,5 +204,22 @@ mainController.addCatalog = (req, res, next) => {
   });
 }
 
+mainController.search = (req, res, next) => {
+console.log(req.query.words);
+  Item.find({item_name: req.query.words}, (err, result) => {
+    if (err) {
+      return next({
+        log: `Express error handler caught addCatalog error ${err}`,
+        status: 400,
+        message: { err: `${err}` }
+      });
+    }
+    else {
+      res.locals.words = result;
+      return next();
+    }
+  });
+}
+
 
 module.exports = mainController;

@@ -22,6 +22,9 @@ router.post(
   (req, res) => res.status(200)
 );
 
+router.get('/search/:words', mainController.search, (req, res) =>
+  res.status(200).json(res.locals.words)
+);
 
 router.get('/itemDetail', mainController.getItemSingle, (req, res) =>
   res.status(200).json(res.locals.item)

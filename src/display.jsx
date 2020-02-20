@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {useParams} from 'react-router-dom';
+import {useParams, Link} from 'react-router-dom';
 import axios from 'axios';
 import './styles.scss';
 import Location from './location.jsx';
+
 
 const Display = () => {
   const [locationData, setLocationData] = useState({});
@@ -29,6 +30,7 @@ const Display = () => {
    if (deleted) {
     success = <h1>Item successfully deleted.</h1>
    }
+   
     const data = locationData.data;
     const array = [];
     for (let i = 0; i < data.length; i++) {
@@ -53,9 +55,14 @@ const Display = () => {
               {array}
             </tbody>
           </table>
-
+          <Link to="/addItem">
+          <button>
+           Add an existing catalog item
+          </button></Link>
+          <Link to="/addCatalog">
+          <button>Add a new item type to the catalog</button>
+        </Link>
         </div>
-
     );
   }
 
