@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Item from './item';
 import Search from './search';
-
+import AddItem from './addItem';
+import AddCatalog from './addCatalog';
 
 const DisplaySpecific = () => {
   const [renderStatus, setRenderStatus] = useState(false);
@@ -61,17 +62,14 @@ const DisplaySpecific = () => {
       );
     }
     return (
-      <div>
-      <Search minimize={minimize}/>
-      <Link to="/addItem">
+      <React.Fragment>
 
-      <button>
-       Add an item
-      </button></Link>
-      <Link to="/addCatalog">
-      <button>Add a new item type to the catalog</button>
-    </Link>
+      <div>
         <h1>List of Items for {type} {number}</h1>
+        <Link to="/">
+        <button>
+         Home
+        </button></Link>
         <table>
           <tbody>
             <tr>
@@ -82,6 +80,28 @@ const DisplaySpecific = () => {
           </tbody>
         </table>
       </div>
+      <Router>
+      <Search minimize={minimize}/>
+      <Link to="/addItem">
+      <button>
+       Add an item
+      </button></Link>
+      <Link to="/addCatalog">
+      <button>Add a new item type to the catalog</button>
+    </Link>
+
+    <div>
+    <Switch>
+    <Route path="/addItem">
+      <AddItem />
+    </Route>
+    <Route path="/addCatalog">
+    <AddCatalog />
+  </Route>
+  </Switch>
+</div>
+</Router>
+      </React.Fragment>
     );
   } else {
     return <h1>Loading...</h1>;

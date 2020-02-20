@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const AddCatalog = () => {
   const [name, setName] = useState('');
   const [brand, setBrand] = useState('');
   const [catalog, setCatalog] = useState('');
+  const {location} = useParams();
 
   function sendAddCatalog() {
       const body = {
@@ -35,6 +36,10 @@ const AddCatalog = () => {
         <p>Catalog Number:</p>
         <input value={catalog} onChange={(g) => setCatalog('' + g.target.value)}/>
         <Link to= '/'><button onClick={() => sendAddCatalog()}>Submit</button></Link> 
+        <Link to={`/${location}`}>
+        <button>
+         Close
+        </button></Link>
         </div>
     )
 

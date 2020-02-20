@@ -49,10 +49,15 @@ const Display = () => {
         />
       );
     }
+    const location = 'display';
     return (
 <React.Fragment>
 <div>
           {success}
+          <Link to="/">
+          <button>
+           Home
+          </button></Link>
           <table>
             <tbody>
               <tr>
@@ -65,17 +70,17 @@ const Display = () => {
           </div>
           <Router>
           <div>
-          <Link to="/addItem">
+          <Link to={`/addItem/${location}`}>
             <button>Add an existing catalog item</button>
           </Link>
-          <Link to="/addCatalog">
+          <Link to={`/addCatalog/${location}`}>
             <button>Add a new item type to the catalog</button>
           </Link>
           <Switch>
-            <Route path="/addItem">
+            <Route path={`/addItem/:location`}>
               <AddItem />
             </Route>
-            <Route path="/addCatalog">
+            <Route path={`/addCatalog/:location`}>
             <AddCatalog />
           </Route>
           </Switch>

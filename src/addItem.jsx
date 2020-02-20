@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const AddItem = () => {
   const [renderStatus, setRenderStatus] = useState(false);
@@ -14,6 +14,7 @@ const AddItem = () => {
   const [massUnit, setMassUnit] = useState('kg');
   const [volumeUnit, setVolumeUnit] = useState('L');
   const [date, setDate] = useState(Date.now());
+  const {location} = useParams();
   useEffect(() => {
     if (!renderStatus) {
     axios
@@ -151,6 +152,14 @@ const AddItem = () => {
           onChange={e => setDate(e.target.value)}
         ></input>
         <Link to="/display"><button onClick={() => sendAddItem()}>Add</button></Link>
+        <Link to="/">
+        <button>
+         Home
+        </button></Link>
+        <Link to={`/${location}`}>
+        <button>
+         Close
+        </button></Link>
       </div>
     );
   } else return <h1>Loading...</h1>;

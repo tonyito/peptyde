@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles.scss';
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 
 const Location = ({ type, number, id }) => {
   return (
