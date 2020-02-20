@@ -1,5 +1,33 @@
-.Button {
-  margin: 3px;
+textarea{
+  height: 50%;
+}
+
+.addItem {
+  border-style: solid;
+  border-color: black;
+  width: 70%;
+}
+
+.addCatalog {
+  border-style: solid;
+  border-color: black;
+  width: 70%;
+}
+
+.mainButtons {
+  margin: auto;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.popups {
+  margin: auto;
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 tr:hover{

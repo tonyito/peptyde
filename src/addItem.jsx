@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
+import './styles.scss';
 
 const AddItem = () => {
   const [renderStatus, setRenderStatus] = useState(false);
@@ -99,7 +100,7 @@ const AddItem = () => {
         );
       }
     return (
-      <div>
+      <div className = 'addItem'>
         <label htmlFor="itemName">Select an item:</label>
         <select id="itemName" onChange={e => setItemSelected(e.target.value)}>
           {nameArray}
@@ -109,7 +110,7 @@ const AddItem = () => {
           {locationArray}
         </select>
         <span>Mass:</span>
-        <textarea
+        <input
           tpe="text"
           name="mass"
           value={mass}
@@ -128,7 +129,7 @@ const AddItem = () => {
           <option value="ng">ng</option>
         </select>
         <span>or Volume:</span>
-        <textarea
+        <input
           tpe="text"
           name="volume"
           value={volume}

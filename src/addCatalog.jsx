@@ -27,7 +27,7 @@ const AddCatalog = () => {
 
 
     return (
-        <div>
+        <div className='addCatalog'>
         <h1>Enter Info for New Catalog Entry</h1>
         <p>Name:</p>
         <input value={name} onChange={(e) => setName('' + e.target.value)}/>
