@@ -6,7 +6,6 @@ const { Item, Category, Location, User } = models;
 
 //middleware to get all locations
 mainController.getLocations = (req, res, next) => {
-
   Location.find({}, (err, location) => {
     if (err)
       return next({
@@ -21,9 +20,8 @@ mainController.getLocations = (req, res, next) => {
   });
 };
 
-//middleware to list all items in a location 
+//middleware to list all items in a location
 mainController.getItems = (req, res, next) => {
-
   Item.find({ location_id: req.query.id }, (err, item) => {
     if (err)
       return next({
@@ -40,7 +38,6 @@ mainController.getItems = (req, res, next) => {
 
 //middleware to get all categories
 mainController.getCatalog = (req, res, next) => {
-
   Category.find({}, (err, items) => {
     if (err)
       return next({
@@ -57,17 +54,34 @@ mainController.getCatalog = (req, res, next) => {
 
 //middleware to find category info of an item
 mainController.getItemID = (req, res, next) => {
-
   Category.findOne(
     { name: req.body.itemSelected, brand: req.body.brandSelected },
     (err, items) => {
-      if (err)
+      if (err) {
         return next({
           log: `Express error handler caught getItemID error ${err}`,
           status: 400,
           message: { err: `${err}` }
-        });
+        }); }
       else {
+        if (!items) {
+          Category.create(
+            { name: req.body.itemSelected, brand: req.body.brandSelected },
+            (newErr, result) => {
+              if (newErr) {
+                return next({
+                  log: `Express error handler caught getItemID error ${err}`,
+                  status: 400,
+                  message: { err: `${err}` }
+                }); }
+              else {
+                console.log(result);
+                res.locals.item = result;
+                return next();
+              }
+            }
+          );
+        }
         res.locals.item = items;
         return next();
       }
@@ -77,7 +91,6 @@ mainController.getItemID = (req, res, next) => {
 
 //middleware to get location info from ID
 mainController.getLocationID = (req, res, next) => {
-
   Location.findOne({ _id: req.body.locationID }, (err, location) => {
     if (err)
       return next({
@@ -92,9 +105,7 @@ mainController.getLocationID = (req, res, next) => {
   });
 };
 
-
 mainController.getItemSingle = (req, res, next) => {
-
   Item.findOne({ _id: req.query.id }, (err, item) => {
     if (err)
       return next({
@@ -109,10 +120,8 @@ mainController.getItemSingle = (req, res, next) => {
   });
 };
 
-
 //middleware to create item document
 mainController.addItem = (req, res, next) => {
-
   const body = {
     item_name: req.body.itemSelected,
     item_id: res.locals.item._id,
@@ -144,7 +153,7 @@ mainController.addItem = (req, res, next) => {
 };
 
 mainController.deleteItem = (req, res, next) => {
-  Item.deleteOne({ _id: req.body.id }, (err) => {
+  Item.deleteOne({ _id: req.body.id }, err => {
     if (err)
       return next({
         log: `Express error handler caught deleteItem error ${err}`,
@@ -170,7 +179,7 @@ mainController.updateItem = (req, res, next) => {
     username: 'default',
     user_id: 00000
   };
-  Item.findOneAndUpdate({ _id: req.body.id }, body, (err) => {
+  Item.findOneAndUpdate({ _id: req.body.id }, body, err => {
     if (err)
       return next({
         log: `Express error handler caught updateItem error ${err}`,
@@ -188,7 +197,7 @@ mainController.addCatalog = (req, res, next) => {
     name: req.body.name,
     brand: req.body.brand,
     catalog_number: req.body.catalog
-  }
+  };
 
   Category.create(body, err => {
     if (err) {
@@ -197,29 +206,26 @@ mainController.addCatalog = (req, res, next) => {
         status: 400,
         message: { err: `${err}` }
       });
-    }
-    else {
+    } else {
       return next();
     }
   });
-}
+};
 
 mainController.search = (req, res, next) => {
-console.log(req.query.words);
-  Item.find({item_name: req.query.words}, (err, result) => {
+  console.log(req.query.words);
+  Item.find({ item_name: req.query.words }, (err, result) => {
     if (err) {
       return next({
         log: `Express error handler caught addCatalog error ${err}`,
         status: 400,
         message: { err: `${err}` }
       });
-    }
-    else {
+    } else {
       res.locals.words = result;
       return next();
     }
   });
-}
-
+};
 
 module.exports = mainController;

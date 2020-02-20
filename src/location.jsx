@@ -7,7 +7,7 @@ const Location = ({ type, number, id }) => {
     <React.Fragment>
       <tr>
         <td>
-          <Link to={`/displaySpecific/${id}/${type}/${number}`}>{type}</Link>
+          <Link to={`/displaySpecific/${id}/${type}/${number}/false`}>{type}</Link>
         </td>
         <td>{number}</td>
       </tr>

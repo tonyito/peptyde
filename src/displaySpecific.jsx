@@ -11,9 +11,9 @@ const DisplaySpecific = () => {
   const [itemsData, setItemsData] = useState([]);
   const [currentForm, setCurrentForm] = useState('');
 
-  let { id, type, number } = useParams();
+  let { id, type, number, redirect } = useParams();
   useEffect(() => {
-    if (!renderStatus) {
+    if (!renderStatus || redirect) {
     axios
       .get(`/api/locationDetail?id=${id}`)
       .then(data => {
@@ -95,7 +95,7 @@ const DisplaySpecific = () => {
        Reset Search
       </button>
       <Router>
-      <Link to="/addItem">
+      <Link to={`/addItem/${id}/${type}/${number}`}>
       <button>
        Add an item
       </button></Link>
@@ -105,7 +105,7 @@ const DisplaySpecific = () => {
 
     <div>
     <Switch>
-    <Route path="/addItem">
+    <Route path='/addItem/:location/:type/:number'>
       <AddItem />
     </Route>
     <Route path="/addCatalog">

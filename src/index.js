@@ -23,7 +23,7 @@ const Index = () => {
           <Route exact path="/itemSpecific/:id">
             <ItemSpecific />
           </Route>
-          <Route exact path="/displaySpecific/:id/:type/:number">
+          <Route path="/displaySpecific/:id/:type/:number/:redirect">
             <DisplaySpecific />
           </Route>
           <Route exact path="/reset/:id/:type/:number">
