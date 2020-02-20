@@ -13,8 +13,13 @@ const Home = () => {
       </Link>
       <Link to="/addItem">
       <button>
-       Add an item
+       Add an existing catalog item
       </button>
+      <Link to="/addCatalog">
+      <button>
+      Add a new item type to the catalog
+      </button>
+      </Link>
     </Link>
     </div>
   );

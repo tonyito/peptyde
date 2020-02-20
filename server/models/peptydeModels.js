@@ -51,7 +51,7 @@ const Item = mongoose.model('items', itemSchema);
 const categorySchema = new Schema({
   name: String,
   brand: String,
-  catalog_number: Number
+  catalog_number: String
 });
 
 // creats a model for the 'categories' collection that will be part of the export

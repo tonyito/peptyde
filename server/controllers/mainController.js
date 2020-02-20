@@ -9,14 +9,14 @@ mainController.getLocations = (req, res, next) => {
 
   Location.find({}, (err, location) => {
     if (err)
-      next({
+      return next({
         log: `Express error handler caught getLocations error ${err}`,
         status: 400,
         message: { err: `${err}` }
       });
     else {
       res.locals.locations = location;
-      next();
+      return next();
     }
   });
 };
@@ -26,14 +26,14 @@ mainController.getItems = (req, res, next) => {
 
   Item.find({ location_id: req.query.id }, (err, item) => {
     if (err)
-      next({
+      return next({
         log: `Express error handler caught getItems error ${err}`,
         status: 400,
         message: { err: `${err}` }
       });
     else {
       res.locals.items = item;
-      next();
+      return next();
     }
   });
 };
@@ -43,14 +43,14 @@ mainController.getCatalog = (req, res, next) => {
 
   Category.find({}, (err, items) => {
     if (err)
-      next({
+      return next({
         log: `Express error handler caught getCatalog error ${err}`,
         status: 400,
         message: { err: `${err}` }
       });
     else {
       res.locals.catalog = items;
-      next();
+      return next();
     }
   });
 };
@@ -62,14 +62,14 @@ mainController.getItemID = (req, res, next) => {
     { name: req.body.itemSelected, brand: req.body.brandSelected },
     (err, items) => {
       if (err)
-        next({
+        return next({
           log: `Express error handler caught getItemID error ${err}`,
           status: 400,
           message: { err: `${err}` }
         });
       else {
         res.locals.item = items;
-        next();
+        return next();
       }
     }
   );
@@ -80,14 +80,14 @@ mainController.getLocationID = (req, res, next) => {
 
   Location.findOne({ _id: req.body.locationID }, (err, location) => {
     if (err)
-      next({
+      return next({
         log: `Express error handler caught getLocationID error ${err}`,
         status: 400,
         message: { err: `${err}` }
       });
     else {
       res.locals.location = location;
-      next();
+      return next();
     }
   });
 };
@@ -97,14 +97,14 @@ mainController.getItemSingle = (req, res, next) => {
 
   Item.findOne({ _id: req.query.id }, (err, item) => {
     if (err)
-      next({
+      return next({
         log: `Express error handler caught getLocationID error ${err}`,
         status: 400,
         message: { err: `${err}` }
       });
     else {
       res.locals.item = item;
-      next();
+      return next();
     }
   });
 };
@@ -131,14 +131,14 @@ mainController.addItem = (req, res, next) => {
 
   Item.create(body, err => {
     if (err)
-      next({
+      return next({
         log: `Express error handler caught addItem error ${err}`,
         status: 400,
         message: { err: `${err}` }
       });
     else {
       res.locals.body = body;
-      next();
+      return next();
     }
   });
 };
@@ -146,19 +146,18 @@ mainController.addItem = (req, res, next) => {
 mainController.deleteItem = (req, res, next) => {
   Item.deleteOne({ _id: req.body.id }, (err) => {
     if (err)
-      next({
+      return next({
         log: `Express error handler caught deleteItem error ${err}`,
         status: 400,
         message: { err: `${err}` }
       });
     else {
-      next();
+      return next();
     }
   });
 };
 
 mainController.updateItem = (req, res, next) => {
-  console.log(req.body.id);
   const body = {
     expiration: req.body.date,
     mass: req.body.mass,
@@ -173,16 +172,37 @@ mainController.updateItem = (req, res, next) => {
   };
   Item.findOneAndUpdate({ _id: req.body.id }, body, (err) => {
     if (err)
-      next({
+      return next({
         log: `Express error handler caught updateItem error ${err}`,
         status: 400,
         message: { err: `${err}` }
       });
     else {
-      next();
+      return next();
     }
   });
 };
+
+mainController.addCatalog = (req, res, next) => {
+  const body = {
+    name: req.body.name,
+    brand: req.body.brand,
+    catalog_number: req.body.catalog
+  }
+
+  Category.create(body, err => {
+    if (err) {
+      return next({
+        log: `Express error handler caught addCatalog error ${err}`,
+        status: 400,
+        message: { err: `${err}` }
+      });
+    }
+    else {
+      return next();
+    }
+  });
+}
 
 
 module.exports = mainController;
