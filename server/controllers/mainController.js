@@ -157,5 +157,32 @@ mainController.deleteItem = (req, res, next) => {
   });
 };
 
+mainController.updateItem = (req, res, next) => {
+  console.log(req.body.id);
+  const body = {
+    expiration: req.body.date,
+    mass: req.body.mass,
+    mass_unit: req.body.massUnit,
+    volume: req.body.volume,
+    volume_unit: req.body.volumeUnit,
+    location_name: res.locals.location.type + ' ' + res.locals.location.number,
+    location_id: req.body.locationID,
+    last_checked: Date.now(),
+    username: 'default',
+    user_id: 00000
+  };
+  Item.findOneAndUpdate({ _id: req.body.id }, body, (err) => {
+    if (err)
+      next({
+        log: `Express error handler caught updateItem error ${err}`,
+        status: 400,
+        message: { err: `${err}` }
+      });
+    else {
+      next();
+    }
+  });
+};
+
 
 module.exports = mainController;

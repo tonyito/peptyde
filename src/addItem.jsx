@@ -48,7 +48,7 @@ const AddItem = () => {
         volumeUnit,
         date
       };
-      fetch('/api/addItem', {
+      fetch('/api/update', {
         method: 'POST',
         headers: {
           'Content-Type': 'Application/JSON'
