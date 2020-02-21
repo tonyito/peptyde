@@ -102,18 +102,76 @@ const AddItem = () => {
         New...
       </option>
     ];
+    let output = [];
     for (let i = 0; i < data.length; i++) {
+      let temp = true;
+      for (let j = 0; j < output.length; j++) {
+        if (data[i].name === output[j].name) {
+          temp = false;
+          j = output.length - 1;
+        }
+      }
+      if (temp) output.push(data[i]);
+    }
+
+    let boutput = [];
+    for (let i = 0; i < data.length; i++) {
+      let temp = true;
+      for (let j = 0; j < boutput.length; j++) {
+        if (data[i].brand === boutput[j].brand) {
+          temp = false;
+          j = boutput.length - 1;
+        }
+      }
+      if (temp) boutput.push(data[i]);
+    }
+    
+    console.log(boutput);
+
+    output = output.sort((function(a, b) {
+      var nameA = a.name.toUpperCase(); // ignore upper and lowercase
+      var nameB = b.name.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+    
+      // names must be equal
+      return 0;
+    }));
+
+    boutput = boutput.sort((function(a, b) {
+      var nameA = a.brand.toUpperCase(); // ignore upper and lowercase
+      var nameB = b.brand.toUpperCase(); // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+    
+      // names must be equal
+      return 0;
+    }));
+
+
+    for (let i = 0; i < output.length; i++) {
       nameArray.push(
-        <option key={`addItemName ${i}`} value={`${data[i].name}`}>
-          {`${data[i].name}`}
-        </option>
-      );
-      brandArray.push(
-        <option key={`addBrandName ${i}`} value={`${data[i].brand}`}>
-          {`${data[i].brand}`}
+        <option key={`addItemName ${i}`} value={`${output[i].name}`}>
+          {`${output[i].name}`}
         </option>
       );
     }
+    for (let i = 0; i < boutput.length; i++) {
+      brandArray.push(
+        <option key={`addBrandName ${i}`} value={`${boutput[i].brand}`}>
+          {`${boutput[i].brand}`}
+        </option>
+      );
+    }
+ 
     for (let i = 0; i < displayLocationData.length; i++) {
       locationArray.push(
         <option key={`addLocationName ${i}`} value={displayLocationData[i]._id}>
