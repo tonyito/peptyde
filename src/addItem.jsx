@@ -126,8 +126,6 @@ const AddItem = () => {
       if (temp) boutput.push(data[i]);
     }
     
-    console.log(boutput);
-
     output = output.sort((function(a, b) {
       var nameA = a.name.toUpperCase(); // ignore upper and lowercase
       var nameB = b.name.toUpperCase(); // ignore upper and lowercase
