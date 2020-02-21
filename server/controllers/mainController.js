@@ -62,29 +62,26 @@ mainController.getItemID = (req, res, next) => {
           log: `Express error handler caught getItemID error ${err}`,
           status: 400,
           message: { err: `${err}` }
-        }); }
-      else {
-        if (!items) {
-          Category.create(
-            { name: req.body.itemSelected, brand: req.body.brandSelected },
-            (newErr, result) => {
-              if (newErr) {
-                return next({
-                  log: `Express error handler caught getItemID error ${err}`,
-                  status: 400,
-                  message: { err: `${err}` }
-                }); }
-              else {
-                console.log(result);
-                res.locals.item = result;
-                return next();
-              }
-            }
-          );
-        }
+        });
+      }
+      if (items) {
         res.locals.item = items;
         return next();
       }
+      Category.create(
+        { name: req.body.itemSelected, brand: req.body.brandSelected },
+        (err, result) => {
+          if (err) {
+            return next({
+              log: `Express error handler caught getItemID error ${err}`,
+              status: 400,
+              message: { err: `${err}` }
+            });
+          }
+          res.locals.item = result;
+          return next();
+        }
+      );
     }
   );
 };
@@ -122,6 +119,7 @@ mainController.getItemSingle = (req, res, next) => {
 
 //middleware to create item document
 mainController.addItem = (req, res, next) => {
+  console.log('res.locals.item in addItem', res.locals.item);
   const body = {
     item_name: req.body.itemSelected,
     item_id: res.locals.item._id,
@@ -213,7 +211,6 @@ mainController.addCatalog = (req, res, next) => {
 };
 
 mainController.search = (req, res, next) => {
-  console.log(req.query.words);
   Item.find({ item_name: req.query.words }, (err, result) => {
     if (err) {
       return next({

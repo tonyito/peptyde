@@ -85,7 +85,7 @@ const Update = () => {
       {locationArray}
     </select>
     <span>Mass:</span>
-        <textarea
+        <input
           tpe="text"
           name="mass"
           value={mass}
@@ -104,7 +104,7 @@ const Update = () => {
           <option value="ng">ng</option>
         </select>
         <span>or Volume:</span>
-        <textarea
+        <input
           tpe="text"
           name="volume"
           value={volume}
@@ -129,7 +129,9 @@ const Update = () => {
           value={newItemData.expiration.slice(0,10)}
           onChange={e => setDate(e.target.value)}
         ></input>
-        <Link to={`/displaySpecific/${redirectLocation._id}/${redirectLocation.type}/${redirectLocation.number}`}><button onClick={() => sendUpdateItem()}>Update</button></Link>
+        <Link to={`/displaySpecific/${redirectLocation._id}/${redirectLocation.type}/${redirectLocation.number}/false`}><button onClick={() => sendUpdateItem()}>Update</button></Link>
+        <Link to={`/displaySpecific/${redirectLocation._id}/${redirectLocation.type}/${redirectLocation.number}/false`}><button>Cancel</button></Link>
+
     </div>
     
   );

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './styles.scss';
-import { useParams, Redirect, Link } from 'react-router-dom';
+import { BrowserRouter as Router, useParams, Redirect, Link, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
+import Update from './update';
 
 const ItemSpecific = () => {
   const [renderStatus, setRenderStatus] = useState(false);
@@ -57,6 +58,7 @@ const ItemSpecific = () => {
     return (
       <React.Fragment>
         <h1>Selected Item Detail:</h1>
+        <Link to='/'><button>Home</button></Link>
         <table>
           <tbody>
             <tr>
@@ -79,16 +81,14 @@ const ItemSpecific = () => {
               <td>
                 {itemsData.data.volume} {itemsData.data.volume_unit}
               </td>
+              <td>{itemsData.data.location_name}</td>
               <td>{itemsData.data.last_checked}</td>
               <td>{itemsData.data.stock_date}</td>
             </tr>
           </tbody>
         </table>
-        <Link
-          to={{
-            pathname: `/update/${id}`
-          }}
-        >
+        <Router>
+        <Link to={`/update/${id}`}>
           <button>Update</button>
         </Link>
         <button
@@ -99,6 +99,14 @@ const ItemSpecific = () => {
         >
           {text}
         </button>
+        <div>
+        <Switch>
+        <Route path='/update/:id'>
+          <Update />
+        </Route>
+      </Switch>
+    </div>
+        </Router>
       </React.Fragment>
     );
   }

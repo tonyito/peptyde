@@ -18,7 +18,7 @@ const Home = () => {
     <Router>
     <div className='mainButtons'>
     <Link to ='/addItem'>
-    <button variant="info">Add an existing catalog item</button>
+    <button variant="info">Add a new item</button>
     </Link>
     <Link to="/addCatalog">
       <button variant="info">Add a new item type to the catalog</button>

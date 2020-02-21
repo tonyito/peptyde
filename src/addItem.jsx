@@ -15,33 +15,40 @@ const AddItem = () => {
   const [massUnit, setMassUnit] = useState('kg');
   const [volumeUnit, setVolumeUnit] = useState('L');
   const [date, setDate] = useState(Date.now());
-  const {location, type, number} = useParams();
+  const [newItem, setNewItem] = useState('');
+  const [brandItem, setBrandItem] = useState('');
+
+  const { location, type, number } = useParams();
+
   useEffect(() => {
     if (!renderStatus) {
-    axios
-      .all([axios.get('/api/catalog/'), axios.get('/api/location/')])
-      .then(
-        axios.spread((catalogDataGot, locationDataGot) => {
-          setCatalogData(catalogDataGot);
-          setLocationData(locationDataGot);
-          setRenderStatus(true);
-        })
-      )
-      .catch(err => console.log('Location Detail: fetch /api: ERROR: ', err));
+      axios
+        .all([axios.get('/api/catalog/'), axios.get('/api/location/')])
+        .then(
+          axios.spread((catalogDataGot, locationDataGot) => {
+            setCatalogData(catalogDataGot);
+            setLocationData(locationDataGot);
+            setRenderStatus(true);
+          })
+        )
+        .catch(err => console.log('Location Detail: fetch /api: ERROR: ', err));
     }
   });
 
   function sendAddItem() {
     if (
-      locationID !== ''&&
+      locationID !== '' &&
       itemSelected !== 'select' &&
       brandSelected !== 'select' &&
       (mass !== 0 || volume !== 0)
     ) {
+      const sendItem = newItem ? newItem : itemSelected;
+      let sendBrand = brandItem ? brandItem : brandSelected;
+
       const body = {
         locationID,
-        itemSelected,
-        brandSelected,
+        itemSelected: sendItem,
+        brandSelected: sendBrand,
         mass,
         massUnit,
         volume,
@@ -56,12 +63,22 @@ const AddItem = () => {
         body: JSON.stringify(body)
       })
         .then(resp => resp.json())
-        .catch(err =>
-          console.log('addItem fetch /api/addItem: ERROR: ', err)
-        );
+        .catch(err => console.log('addItem fetch /api/addItem: ERROR: ', err));
     }
   }
   if (renderStatus) {
+    const itemArray = [];
+    const newBrandArray = [];
+    if (itemSelected === 'new') {
+      itemArray.push(
+        <input key="iteminput" onChange={e => setNewItem(e.target.value)} />
+      );
+    }
+    if (brandSelected === 'new') {
+      newBrandArray.push(
+        <input key="brandinput" onChange={e => setBrandItem(e.target.value)} />
+      );
+    }
     const displayLocationData = locationData.data;
     const locationArray = [
       <option key="defaultLocation" value="select">
@@ -72,43 +89,50 @@ const AddItem = () => {
     const nameArray = [
       <option key="defaultName" value="select">
         Select
+      </option>,
+      <option key="newName" value="new">
+        New...
       </option>
     ];
     const brandArray = [
       <option key="defaultName" value="select">
         Select
+      </option>,
+      <option key="newBrand" value="new">
+        New...
       </option>
     ];
     for (let i = 0; i < data.length; i++) {
       nameArray.push(
         <option key={`addItemName ${i}`} value={`${data[i].name}`}>
-        {`${data[i].name}`}
+          {`${data[i].name}`}
         </option>
       );
       brandArray.push(
         <option key={`addBrandName ${i}`} value={`${data[i].brand}`}>
-        {`${data[i].brand}`}
+          {`${data[i].brand}`}
         </option>
       );
-      
     }
     for (let i = 0; i < displayLocationData.length; i++) {
-        locationArray.push(
-          <option key={`addLocationName ${i}`} value={displayLocationData[i]._id}>
-            {displayLocationData[i].type} {displayLocationData[i].number}
-          </option>
-        );
-      }
+      locationArray.push(
+        <option key={`addLocationName ${i}`} value={displayLocationData[i]._id}>
+          {displayLocationData[i].type} {displayLocationData[i].number}
+        </option>
+      );
+    }
     return (
-      <div className = 'addItem'>
+      <div className="addItem">
         <label htmlFor="itemName">Select an item:</label>
         <select id="itemName" onChange={e => setItemSelected(e.target.value)}>
           {nameArray}
         </select>
+        {itemArray}
         <label htmlFor="brandName">Select the maker:</label>
         <select id="brandName" onChange={e => setBrandSelected(e.target.value)}>
-        {brandArray}
-      </select>
+          {brandArray}
+        </select>
+        {newBrandArray}
         <label htmlFor="locationName">Select an location:</label>
         <select id="locationName" onChange={e => setLocationID(e.target.value)}>
           {locationArray}
@@ -157,15 +181,15 @@ const AddItem = () => {
           name="expiration"
           onChange={e => setDate(e.target.value)}
         ></input>
-        <Link to={`/displaySpecific/${location}/${type}/${number}/true`}><button onClick={() => sendAddItem()}>Add</button></Link>
+        <Link to={`/displaySpecific/${location}/${type}/${number}/true`}>
+          <button onClick={() => sendAddItem()}>Add</button>
+        </Link>
         <Link to="/">
-        <button>
-         Home
-        </button></Link>
+          <button>Home</button>
+        </Link>
         <Link to={`/${location}`}>
-        <button>
-         Close
-        </button></Link>
+          <button>Close</button>
+        </Link>
       </div>
     );
   } else return <h1>Loading...</h1>;

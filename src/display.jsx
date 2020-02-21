@@ -71,7 +71,7 @@ const Display = () => {
           <Router>
           <div>
           <Link to={`/addItem/${location}`}>
-            <button>Add an existing catalog item</button>
+            <button>Add a new item</button>
           </Link>
           <Link to={`/addCatalog/${location}`}>
             <button>Add a new item type to the catalog</button>

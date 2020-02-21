@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useParams, BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { Link, useParams, BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Item from './item';
 import Search from './search';
 import AddItem from './addItem';
@@ -80,6 +80,27 @@ const DisplaySpecific = () => {
         <button>
          Home
         </button></Link>
+        <Search minimize={minimize} setCurrentForm={setCurrentForm}/>
+        <Router>
+        <Link to={`/addItem/${id}/${type}/${number}`}>
+        <button>
+         Add an item
+        </button></Link>
+        <Link to="/addCatalog">
+        <button>Add a new item type to the catalog</button>
+      </Link>
+  
+      <div>
+      <Switch>
+      <Route path='/addItem/:location/:type/:number'>
+        <AddItem />
+      </Route>
+      <Route path="/addCatalog">
+      <AddCatalog />
+    </Route>
+    </Switch>
+  </div>
+  </Router>
         <table>
           <tbody>
             <tr>
@@ -90,30 +111,7 @@ const DisplaySpecific = () => {
           </tbody>
         </table>
       </div>
-      <Search minimize={minimize} setCurrentForm={setCurrentForm}/>
-      <button onClick={() => setRenderStatus(false)}>
-       Reset Search
-      </button>
-      <Router>
-      <Link to={`/addItem/${id}/${type}/${number}`}>
-      <button>
-       Add an item
-      </button></Link>
-      <Link to="/addCatalog">
-      <button>Add a new item type to the catalog</button>
-    </Link>
 
-    <div>
-    <Switch>
-    <Route path='/addItem/:location/:type/:number'>
-      <AddItem />
-    </Route>
-    <Route path="/addCatalog">
-    <AddCatalog />
-  </Route>
-  </Switch>
-</div>
-</Router>
       </React.Fragment>
     );
   } else {
